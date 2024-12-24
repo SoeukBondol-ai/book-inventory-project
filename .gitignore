@@ -1,0 +1,4 @@
+#ignore venv
+venv/
+#ignore pycahce
+__pycache__/
