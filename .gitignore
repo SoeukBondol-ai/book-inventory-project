@@ -1,4 +1,1 @@
-#ignore venv
 .yv_team
-#ignore pycahce
-__pycache__/
