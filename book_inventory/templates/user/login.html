@@ -3,11 +3,12 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
+<div class="login-form">
     <form method="post">
         {% csrf_token %}
+        <h2 class="text-center">Log in</h2>
         {% for field in form %}
-            <div class="mb-3">
+            <div class="form-group">
                 <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                 {{ field }}
                 {% if field.help_text %}
@@ -18,7 +19,10 @@
                 {% endfor %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Login</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>
     </form>
+    <p class="text-center"><a href="{% url 'register' %}">Create an Account</a></p>
+</div>
 {% endblock %}
-

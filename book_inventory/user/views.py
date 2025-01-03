@@ -9,7 +9,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('book_list')
+            return redirect('home')
     else:
         form = CustomUserCreationForm()
     return render(request, 'user/register.html', {'form': form})
@@ -20,7 +20,7 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('book_list')
+            return redirect('home')
     else:
         form = CustomAuthenticationForm()
     return render(request, 'user/login.html', {'form': form})
@@ -28,5 +28,5 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect('book_list')
+    return redirect('home')
 
