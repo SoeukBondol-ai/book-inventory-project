@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ book.name }}{% endblock %}
-
 {% block content %}
-    <h1>{{ book.name }}</h1>
-    <div class="row">
+<div class="row">
+    <a href="{% url 'book_detail' book.id %}" style="text-decoration: none; color: inherit; display: flex;">
         <div class="col-md-4">
             {% if book.image %}
-                <img src="{{ book.image.url }}" class="img-fluid" alt="{{ book.name }}">
+                <img src="{{ book.image.url }}" class="img-fluid" alt="{{ book.title }}">
+            {% else %}
+                <img src="https://via.placeholder.com/300" class="img-fluid" alt="{{ book.title }}">
             {% endif %}
         </div>
         <div class="col-md-8">
+            <h1>{{ book.title }}</h1>
             <p><strong>Author:</strong> {{ book.author }}</p>
             <p><strong>Price:</strong> ${{ book.price }}</p>
-            <p><strong>Stock:</strong> {{ book.stock }}</p>
-            <p><strong>Description:</strong> {{ book.description }}</p>
-            {% if user.is_authenticated and user.is_admin %}
-                <a href="{% url 'book_edit' book.pk %}" class="btn btn-primary">Edit</a>
-                <a href="{% url 'book_delete' book.pk %}" class="btn btn-danger">Delete</a>
-            {% endif %}
+            <p><strong>Category:</strong> {{ book.category }}</p>
+            <p><strong>Description:</strong></p>
+            <p>{{ book.description }}</p>
         </div>
-    </div>
+    </a>
+</div>
 {% endblock %}
