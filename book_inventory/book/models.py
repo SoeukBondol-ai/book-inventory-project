@@ -14,6 +14,7 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to='media/', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    stock = models.IntegerField(default=0)
     is_new_arrival = models.BooleanField(default=False)
     is_best_seller = models.BooleanField(default=False)
     is_now_trending = models.BooleanField(default=False)
