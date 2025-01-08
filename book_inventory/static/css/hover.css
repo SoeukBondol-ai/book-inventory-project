@@ -1,0 +1,33 @@
+ .card-img-wrapper {
+    padding: 5px;
+ }
+ 
+ .card-img-top, .image-in-detail {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    border-radius: 0.25rem;
+}
+
+.card:hover .card-img-top, .image-in-detail:hover {
+    transform: scale(0.975);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover, .image-in-detail:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure the ::after pseudo-element does not interfere with the hover effect */
+.card-body a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1; /* Ensure it is above other content but does not interfere with hover */
+    pointer-events: none; /* Allow hover events to pass through */
+}

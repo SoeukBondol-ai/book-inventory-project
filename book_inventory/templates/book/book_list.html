@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/hover.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -8,7 +12,7 @@
         <div class="row">
             {% for book in books %}
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
-                    <div class="book-card h-100">
+                    <div class=" card book-card h-100">
                         <div class="card-img-wrapper">
                             {% if book.image %}
                                 <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">

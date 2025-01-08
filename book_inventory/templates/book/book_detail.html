@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
+
+<!-- Link book_detail.css to book_detail.html -->
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/hover.css' %}">
+{% endblock %}
+
+
 {% block content %}
 <div class="container py-5">
     <!-- Simple Back Navigation -->
@@ -17,7 +25,7 @@
             <!-- Image Column -->
             <div class="col-md-4 p-4">
                 {% if book.image %}
-                    <img src="{{ book.image.url }}" class="img-fluid rounded" alt="{{ book.title }}">
+                    <img src="{{ book.image.url }}" class="img-fluid rounded image-in-detail" alt="{{ book.title }}">
                 {% else %}
                     <img src="https://via.placeholder.com/300" class="img-fluid rounded" alt="{{ book.title }}">
                 {% endif %}
@@ -80,17 +88,20 @@
         <div class="row flex-nowrap overflow-auto pb-3">
             {% for related_book in related_books %}
             <div class="col-md-3">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{{ related_book.image.url|default:'https://via.placeholder.com/200' }}" 
-                         class="card-img-top" 
-                         style="height: 250px; object-fit: cover;"
-                         alt="{{ related_book.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">{{ related_book.title }}</h5>
-                        <p class="card-text text-muted mb-2">{{ related_book.author }}</p>
-                        <h6 class="text-primary">${{ related_book.price }}</h6>
-                        <a href="{% url 'book_detail' related_book.id %}" 
-                           class="stretched-link"></a>
+                <div class="card h-100 border-1">
+                    <div class="card-img-wrapper card-img-wrapper-book-detail">
+                        <img src="{{ related_book.image.url|default:'https://via.placeholder.com/200' }}"
+                             class="card-img-top"
+                             style="height: 250px; object-fit: cover;"
+                             alt="{{ related_book.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate">{{ related_book.title }}</h5>
+                            <p class="card-text text-muted mb-2">{{ related_book.author }}</p>
+                            <h6 class="text-primary">${{ related_book.price }}</h6>
+                            <!-- <a href="{% url 'book_detail' related_book.id %}"
+                               class="stretched-link"></a> -->
+                            <a href="{% url 'book_detail' related_book.id %}" class="btn btn-primary stretched-link">Click Me</a>
+                        </div>
                     </div>
                 </div>
             </div>

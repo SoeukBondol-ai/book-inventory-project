@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% }
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/hover.css' %}">
+{% endblock %}
+
 
 {% block content %}
 <!-- New Arrivals Section -->
@@ -131,4 +134,9 @@
         <a href="{% url 'book_list_by_category' 'award-winners' %}" class="btn btn-outline-primary">See All Award Winners</a>
     </div>
 </div>
+
+<!-- add js -->
+    {% block extra_js %}
+        <!-- <script src="{% static 'js/home.js' %}"></script> -->
+    {% endblock %}
 {% endblock %}
