@@ -3,26 +3,41 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="login-form">
-    <form method="post">
-        {% csrf_token %}
-        <h2 class="text-center">Log in</h2>
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <div class="form-text">{{ field.help_text }}</div>
-                {% endif %}
-                {% for error in field.errors %}
-                    <div class="invalid-feedback">{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
+            <p class="text-muted">Please login to your account</p>
         </div>
-    </form>
-    <p class="text-center"><a href="{% url 'register' %}">Create an Account</a></p>
+        
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-floating mb-3">
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in field.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? 
+                <a href="{% url 'register' %}" class="link-primary">Register</a>
+            </p>
+        </div>
+    </div>
 </div>
 {% endblock %}

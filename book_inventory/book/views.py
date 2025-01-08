@@ -28,50 +28,45 @@ class BookListView(ListView):
     model = Book
     template_name = 'book/book_list.html'
     context_object_name = 'books'
-    paginate_by = 12
-
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = Book.objects.all().order_by('title')  
         category = self.kwargs.get('category')
         if category:
             queryset = queryset.filter(category__name=category)
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        category = self.kwargs.get('category')
-        if category:
-            context['category'] = category
-        return context
-
 def search_books(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', ' ')
+    books = []
     if query:
-        books = Book.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)).order_by('title')
+        books = Book.objects.filter(Q(title__icontains=query)|Q(author__icontains=query)).order_by('title')
     return render(request, 'book/search_results.html', {'books': books, 'query': query})
 
 def book_list_by_category(request, category):
-    # Handle special categories
-    if category == 'new-arrivals':
-        display_name = 'New Arrivals'
-        books = Book.objects.filter(is_new_arrival=True).order_by('title')
-    elif category == 'now-trending':
-        display_name = 'Now Trending'
-        books = Book.objects.filter(is_now_trending=True).order_by('title')
-    elif category == 'best-sellers':
-        display_name = 'Best Sellers'
-        books = Book.objects.filter(is_best_seller=True).order_by('title')
-    elif category == 'award-winners':
-        display_name = 'Award Winners'
-        books = Book.objects.filter(is_award_winner=True).order_by('title')
+    """Display books filtered by category"""
+    category_filters = {
+        'new-arrivals': ('New Arrivals', Q(is_new_arrival=True)),
+        'now-trending': ('Now Trending', Q(is_now_trending=True)),
+        'best-sellers': ('Best Sellers', Q(is_best_seller=True)),
+        'award-winners': ('Award Winners', Q(is_award_winner=True))
+    }
+
+    if category in category_filters:
+        display_name, query = category_filters[category]
+        books = Book.objects.filter(query)
     else:
-        # Replace hyphens with spaces and capitalize each word for general categories
         display_name = category.replace('-', ' ').title()
-        books = Book.objects.filter(category__name__iexact=display_name).order_by('title')
-    
-    paginator = Paginator(books, 6) 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
-    return render(request, 'book/book_list.html', {'page_obj': page_obj, 'category': display_name})
+        books = Book.objects.filter(category__name__iexact=display_name)
+
+    paginator = Paginator(books.order_by('title'), 12)
+    page = request.GET.get('page', 1)
+    books_page = paginator.get_page(page)
+
+    return render(request, 'book/book_list.html', {
+        'books': books_page,
+        'category': display_name,
+        'categories': Category.objects.all()
+    })
+
+def get_categories(request):
+    return {'categories': Category.objects.all()}
