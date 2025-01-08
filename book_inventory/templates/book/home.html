@@ -4,94 +4,131 @@
 {% }
 
 {% block content %}
-<h1 class="mb-4">Welcome to our Bookstore</h1>
-
-<h2>New Arrivals</h2>
-<div class="row mb-4">
-    {% for book in new_arrivals %}
-        <div class="col-md-2 mb-3">
-            <div class="card book-card">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text">{{ book.author }}</p>
-                    <p class="card-text">${{ book.price }}</p>
-                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">View Details</a>
+<!-- New Arrivals Section -->
+<div class="container mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="fas fa-star text-warning me-2"></i>
+        <h2 class="m-0">New Arrivals</h2>
+    </div>
+    <div class="row">
+        {% for book in new_arrivals %}
+        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
+            <div class="card book-card h-100">
+                <div class="card-img-wrapper">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ book.title }}</h5>
+                    <p class="card-text text-muted small mb-2">{{ book.author }}</p>
+                    <p class="card-text text-primary fw-bold mt-auto">${{ book.price }}</p>
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-outline-primary btn-sm stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="text-center">
+        <a href="{% url 'book_list_by_category' 'new-arrivals' %}" class="btn btn-outline-primary">See All New Arrivals</a>
+    </div>
 </div>
-<a href="{% url 'book_list_by_category' 'new-arrivals' %}" class="btn btn-secondary mb-4">See All New Arrivals</a>
 
-<h2>Best Sellers</h2>
-<div class="row mb-4">
-    {% for book in best_sellers %}
-        <div class="col-md-2 mb-3">
-            <div class="card book-card">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text">{{ book.author }}</p>
-                    <p class="card-text">${{ book.price }}</p>
-                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">View Details</a>
+<!-- Best Sellers Section -->
+<div class="container mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="fas fa-crown text-warning me-2"></i>
+        <h2 class="m-0">Best Sellers</h2>
+    </div>
+    <div class="row">
+        {% for book in best_sellers %}
+        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
+            <div class="card book-card h-100">
+                <div class="card-img-wrapper">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ book.title }}</h5>
+                    <p class="card-text text-muted small mb-2">{{ book.author }}</p>
+                    <p class="card-text text-primary fw-bold mt-auto">${{ book.price }}</p>
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-outline-primary btn-sm stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="text-center">
+        <a href="{% url 'book_list_by_category' 'best-sellers' %}" class="btn btn-outline-primary">See All Best Sellers</a>
+    </div>
 </div>
-<a href="{% url 'book_list_by_category' 'best-sellers' %}" class="btn btn-secondary mb-4">See All Best Sellers</a>
 
-<h2>Trending</h2>
-<div class="row mb-4">
-    {% for book in now_trending %}
-        <div class="col-md-2 mb-3">
-            <div class="card book-card">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text">{{ book.author }}</p>
-                    <p class="card-text">${{ book.price }}</p>
-                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">View Details</a>
+<!-- Trending Section -->
+<div class="container mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="fas fa-fire text-danger me-2"></i>
+        <h2 class="m-0">Trending Now</h2>
+    </div>
+    <div class="row">
+        {% for book in now_trending %}
+        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
+            <div class="card book-card h-100">
+                <div class="card-img-wrapper">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ book.title }}</h5>
+                    <p class="card-text text-muted small mb-2">{{ book.author }}</p>
+                    <p class="card-text text-primary fw-bold mt-auto">${{ book.price }}</p>
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-outline-primary btn-sm stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="text-center">
+        <a href="{% url 'book_list_by_category' 'now-trending' %}" class="btn btn-outline-primary">See All Trending</a>
+    </div>
 </div>
-<a href="{% url 'book_list_by_category' 'now-trending' %}" class="btn btn-secondary mb-4">See All Trending</a>
 
-<h2>Award Winners</h2>
-<div class="row mb-4">
-    {% for book in award_winners %}
-        <div class="col-md-2 mb-3">
-            <div class="card book-card">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text">{{ book.author }}</p>
-                    <p class="card-text">${{ book.price }}</p>
-                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">View Details</a>
+<!-- Award Winners Section -->
+<div class="container mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="fas fa-award text-success me-2"></i>
+        <h2 class="m-0">Award Winners</h2>
+    </div>
+    <div class="row">
+        {% for book in award_winners %}
+        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
+            <div class="card book-card h-100">
+                <div class="card-img-wrapper">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ book.title }}</h5>
+                    <p class="card-text text-muted small mb-2">{{ book.author }}</p>
+                    <p class="card-text text-primary fw-bold mt-auto">${{ book.price }}</p>
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-outline-primary btn-sm stretched-link">View Details</a>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="text-center">
+        <a href="{% url 'book_list_by_category' 'award-winners' %}" class="btn btn-outline-primary">See All Award Winners</a>
+    </div>
 </div>
-<a href="{% url 'book_list_by_category' 'award-winners' %}" class="btn btn-secondary mb-4">See All Award Winners</a>
-
 {% endblock %}
