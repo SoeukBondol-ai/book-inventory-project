@@ -2,3 +2,6 @@
 .yv_team
 #ignore pycahce
 __pycache__/
+
+# Database
+db.sqlite3

@@ -1,23 +1,101 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="row">
-    <a href="{% url 'book_detail' book.id %}" style="text-decoration: none; color: inherit; display: flex;">
-        <div class="col-md-4">
-            {% if book.image %}
-                <img src="{{ book.image.url }}" class="img-fluid" alt="{{ book.title }}">
-            {% else %}
-                <img src="https://via.placeholder.com/300" class="img-fluid" alt="{{ book.title }}">
-            {% endif %}
+<div class="container py-5">
+    <!-- Simple Back Navigation -->
+    <!-- Uses browser's history API to go back to the previous page. -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <button onclick="history.back()" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back
+            </button>
         </div>
-        <div class="col-md-8">
-            <h1>{{ book.title }}</h1>
-            <p><strong>Author:</strong> {{ book.author }}</p>
-            <p><strong>Price:</strong> ${{ book.price }}</p>
-            <p><strong>Category:</strong> {{ book.category }}</p>
-            <p><strong>Description:</strong></p>
-            <p>{{ book.description }}</p>
+    </div>
+
+    <!-- Main Book Details Card -->
+    <div class="card shadow-sm mb-5">
+        <div class="row g-0">
+            <!-- Image Column -->
+            <div class="col-md-4 p-4">
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" class="img-fluid rounded" alt="{{ book.title }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300" class="img-fluid rounded" alt="{{ book.title }}">
+                {% endif %}
+            </div>
+            
+            <!-- Details Column -->
+            <div class="col-md-8">
+                <div class="card-body">
+                    <!-- Title and Author -->
+                    <h1 class="display-6 fw-bold mb-2">{{ book.title }}</h1>
+                    <h5 class="text-muted mb-4">by {{ book.author }}</h5>
+                    
+                    <!-- Key Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-1">Price</h6>
+                                    <h4 class="text-primary">${{ book.price }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-1">Category</h6>
+                                    <h4>{{ book.category }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-1">Stock</h6>
+                                    <h4 class="{% if book.stock > 0 %}text-success{% else %}text-danger{% endif %}">
+                                        {% if book.stock > 0 %}
+                                            {{ book.stock }} Available
+                                        {% else %}
+                                            Out of Stock
+                                        {% endif %}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 mb-3">Description</h5>
+                        <p class="lead">{{ book.description }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </a>
+    </div>
+
+    <!-- Related Books Section -->
+    <div class="mb-5">
+        <h3 class="mb-4">More from {{ book.category }}</h3>
+        <div class="row flex-nowrap overflow-auto pb-3">
+            {% for related_book in related_books %}
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{{ related_book.image.url|default:'https://via.placeholder.com/200' }}" 
+                         class="card-img-top" 
+                         style="height: 250px; object-fit: cover;"
+                         alt="{{ related_book.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">{{ related_book.title }}</h5>
+                        <p class="card-text text-muted mb-2">{{ related_book.author }}</p>
+                        <h6 class="text-primary">${{ related_book.price }}</h6>
+                        <a href="{% url 'book_detail' related_book.id %}" 
+                           class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

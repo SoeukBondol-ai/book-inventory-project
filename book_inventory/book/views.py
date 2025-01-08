@@ -23,6 +23,16 @@ class HomeView(ListView):
 class BookDetailView(DetailView):
     model = Book
     template_name = 'book/book_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get current book
+        book = self.get_object()
+        context['related_books'] = Book.objects.filter(
+            category=book.category
+        ).exclude(id=book.id)[:4]
+        
+        return context
 
 class BookListView(ListView):
     model = Book
