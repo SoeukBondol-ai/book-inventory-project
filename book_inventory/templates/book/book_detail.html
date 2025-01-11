@@ -89,6 +89,7 @@
             {% for related_book in related_books %}
             <div class="col-md-3">
                 <div class="card h-100 border-1">
+                    <a href="{% url 'book_detail' related_book.id %}" class="stretched-link"></a>
                     <div class="card-img-wrapper card-img-wrapper-book-detail">
                         <img src="{{ related_book.image.url|default:'https://via.placeholder.com/200' }}"
                              class="card-img-top"
@@ -98,9 +99,6 @@
                             <h5 class="card-title text-truncate">{{ related_book.title }}</h5>
                             <p class="card-text text-muted mb-2">{{ related_book.author }}</p>
                             <h6 class="text-primary">${{ related_book.price }}</h6>
-                            <!-- <a href="{% url 'book_detail' related_book.id %}"
-                               class="stretched-link"></a> -->
-                            <a href="{% url 'book_detail' related_book.id %}" class="btn btn-primary stretched-link">View Detail</a>
                         </div>
                     </div>
                 </div>

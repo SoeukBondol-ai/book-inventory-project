@@ -15,6 +15,7 @@
             {% for book in books %}
                 <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
                     <div class="card book-card h-100 shadow-hover">
+                        <a href="{% url 'book_detail' book.pk %}" class="stretched-link"></a>
                         <div class="card-img-wrapper">
                             {% if book.image %}
                                 <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
@@ -26,33 +27,17 @@
                             <h5 class="card-title text-truncate">{{ book.title }}</h5>
                             <p class="card-text text-muted small mb-2">{{ book.author }}</p>
                             <p class="card-text text-primary fw-bold mt-auto">${{ book.price }}</p>
-                            <a href="{{ book.get_absolute_url }}" 
-                               class="btn btn-outline-primary btn-sm stretched-link">
-                               View Details
-                            </a>
+                            {% if user.is_authenticated and user.is_admin %}
+                                <a href="{% url 'edit_book' book.pk %}" class="btn btn-primary mt-auto">Edit</a>
+                                <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger mt-auto">Delete</a>
+                            {% endif %}
                         </div>
-                    </div>
-                </div>
-            {% empty %}
-                <div class="col-12 text-center py-5">
-                    <div class="empty-state">
-                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                        <p class="lead text-muted">No results found for "{{ query }}"</p>
-                        <p class="text-muted mb-4">Try different keywords or browse our categories</p>
-                        <a href="{% url 'home' %}" class="btn btn-primary">Return to Homepage</a>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="text-center py-5">
-            <div class="empty-state">
-                <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                <h3 class="text-muted mb-3">Please enter a search term</h3>
-                <p class="text-muted mb-4">Type something in the search box above</p>
-                <a href="{% url 'home' %}" class="btn btn-primary">Return to Homepage</a>
-            </div>
-        </div>
+        <p>No search query provided.</p>
     {% endif %}
 </div>
 {% endblock %}
