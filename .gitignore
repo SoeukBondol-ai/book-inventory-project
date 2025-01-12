@@ -1,5 +1,6 @@
 #ignore venv
 venv_name/
+.venv
 #ignore pycahce
 __pycache__/
 
