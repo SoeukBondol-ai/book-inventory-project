@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from user.models import CustomUser
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -25,3 +26,13 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         return reverse('book_detail', args=[str(self.id)])
+    
+class Wishlist(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('user', 'book')  # Prevent duplicate entries
+        
+    def __str__(self):
+        return f"{self.user.username} - {self.book.title}"

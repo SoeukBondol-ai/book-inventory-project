@@ -11,3 +11,8 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
+    
+    
+from .models import Wishlist  # Import your Wishlist model
+
+admin.site.register(Wishlist)

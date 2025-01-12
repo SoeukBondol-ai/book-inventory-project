@@ -31,3 +31,15 @@
     z-index: 1; /* Ensure it is above other content but does not interfere with hover */
     pointer-events: none; /* Allow hover events to pass through */
 }
+
+.btn-hover-red:hover {
+    background-color: red !important;
+    border-color: red !important;
+    color: white !important;
+  }
+
+  .bg-danger-hover:hover {
+    background-color: red !important;
+    border-color: red !important;
+    color: white !important;
+  }

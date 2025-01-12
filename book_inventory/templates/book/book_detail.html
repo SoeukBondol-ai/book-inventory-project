@@ -36,7 +36,12 @@
                 <div class="card-body">
                     <!-- Title and Author -->
                     <h1 class="display-6 fw-bold mb-2">{{ book.title }}</h1>
-                    <h5 class="text-muted mb-4">by {{ book.author }}</h5>
+                    <!-- add to wishlist -->
+                    <h5 class="text-muted">by {{ book.author }}</h5>
+                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
+                        {% csrf_token %}
+                        <button class="mb-4 mt-2 btn btn-sm btn-outline-primary w-10" type="submit">Wishlist</button>
+                    </form>
                     
                     <!-- Key Information -->
                     <div class="row mb-4">

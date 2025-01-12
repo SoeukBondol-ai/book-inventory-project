@@ -24,9 +24,12 @@
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon pt-1">
+                    <i class="fas fa-bars"></i>
+                </span>
             </button>
 
+            <!-- category list -->
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -38,7 +41,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
                             Categories
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu mb-3">
                             {% for category in categories %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'book_list_by_category' category.name|slugify %}">
@@ -65,6 +68,7 @@
                     </div>
                 </form>
 
+                <!-- profile -->
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         {% if user.is_admin %}
@@ -74,14 +78,23 @@
                                 </a>
                             </li>
                         {% endif %}
+
+                        <!-- profile dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle"></i> {{ user.username }}
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu px-4" aria-labelledby="userDropdown">
+                                <!-- log out -->
                                 <li>
                                     <a class="dropdown-item" href="{% url 'logout' %}">
                                         <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a>
+                                </li>
+                                <!-- go to wishlist -->
+                                <li>
+                                    <a href="{% url 'view_wishlist' %}" onclick="sessionStorage.setItem('lastVisited', window.location.href);" class="dropdown-item">
+                                        <i class="fas fa-list"></i> Wishlist
                                     </a>
                                 </li>
                             </ul>

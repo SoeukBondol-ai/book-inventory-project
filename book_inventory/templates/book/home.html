@@ -27,7 +27,15 @@
                     <h6 class="card-title text-truncate">{{ book.title }}</h6>
                     <p class="card-text small text-muted mb-2">{{ book.author }}</p>
                     <p class="card-text price">${{ book.price }}</p>
+                    <!-- view detail -->
                     <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+                    <!-- add to wishlist -->
+                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
+                        {% csrf_token %}
+                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
+                    </form>
+
+                    <!-- admin remove and delete -->
                     {% if user.is_authenticated and user.is_admin %}
                         <div class="btn-container mt-2">
                             <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
@@ -62,7 +70,13 @@
                     <h6 class="card-title text-truncate">{{ book.title }}</h6>
                     <p class="card-text small text-muted mb-2">{{ book.author }}</p>
                     <p class="card-text price">${{ book.price }}</p>
+                    <!-- view detail -->
                     <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+                    <!-- add to wishlist -->
+                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
+                        {% csrf_token %}
+                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
+                    </form>
                     {% if user.is_authenticated and user.is_admin %}
                         <div class="btn-container mt-2">
                             <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
@@ -97,7 +111,13 @@
                     <h6 class="card-title text-truncate">{{ book.title }}</h6>
                     <p class="card-text small text-muted mb-2">{{ book.author }}</p>
                     <p class="card-text price">${{ book.price }}</p>
+                    <!-- view details -->
                     <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+                    <!-- add to wishlist -->
+                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
+                        {% csrf_token %}
+                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
+                    </form>
                     {% if user.is_authenticated and user.is_admin %}
                         <div class="btn-container mt-2">
                             <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
@@ -132,7 +152,13 @@
                     <h6 class="card-title text-truncate">{{ book.title }}</h6>
                     <p class="card-text small text-muted mb-2">{{ book.author }}</p>
                     <p class="card-text price">${{ book.price }}</p>
+                    <!-- view detail -->
                     <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+                    <!-- add to wishlist -->
+                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
+                        {% csrf_token %}
+                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
+                    </form>
                     {% if user.is_authenticated and user.is_admin %}
                         <div class="btn-container mt-2">
                             <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
