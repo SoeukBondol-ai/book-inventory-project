@@ -38,10 +38,25 @@
                     <h1 class="display-6 fw-bold mb-2">{{ book.title }}</h1>
                     <!-- add to wishlist -->
                     <h5 class="text-muted">by {{ book.author }}</h5>
-                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
-                        {% csrf_token %}
-                        <button class="mb-4 mt-2 btn btn-sm btn-outline-primary w-10" type="submit">Wishlist</button>
-                    </form>
+
+                    <!-- add to cart or wishlist -->
+                    <div class="d-flex gap-2 mb-4">
+                        <!-- add to cart -->
+                        <form method="post" action="{% url 'add_to_cart' book.id %}" class="w-100">
+                            {% csrf_token %}
+                            <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </form>
+
+                        <!-- add to wishlist -->
+                        <form method="post" action="{% url 'add_to_wishlist' book.id %}"  class="w-20">
+                            {% csrf_token %}
+                            <button class="mt-2 btn btn-sm btn-outline-primary w-100 btn-hover-pink" type="submit">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form> 
+                    </div>
                     
                     <!-- Key Information -->
                     <div class="row mb-4">

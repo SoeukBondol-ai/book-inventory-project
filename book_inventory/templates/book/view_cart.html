@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Your Cart</h1>
+{% if cart_items %}
+    <table class="table table-bordered table-hover text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Add</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.book.title }}
+                    <a href="{% url 'book_detail' item.book.pk %}">
+                        <i><i class="fas fa-info-circle"></i>
+                    </a>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.book.price }}</td>
+                <td>${{ item.total_price }}</td>
+                <!-- add more -->
+                <td>
+                    <form class="d-flex justify-content-center" action="{% url 'add_more_to_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to add these items?');">
+                        {% csrf_token %}
+                        <div class="input-group" style="max-width: 150px;">
+                            <input 
+                                type="number" 
+                                name="quantity_to_add" 
+                                min="1"
+                                value="1"
+                                style="border-radius: 5px;"
+                                class="form-control mr-2 text-center"
+                            >
+                            <button type="submit" class="btn btn-success rounded-1">Add</button>
+                        </div>
+                    </form>
+                </td>
+                <!-- remove more -->
+                <td>
+                    <form class="d-flex justify-content-center" action="{% url 'remove_from_cart' item.id %}" method="post" onsubmit="return confirm('Are you sure you want to remove these items?');">
+                        {% csrf_token %}
+                        <div class="input-group" style="max-width: 150px;">
+                            <input 
+                                type="number" 
+                                name="quantity_to_remove" 
+                                min="1" 
+                                max="{{ item.quantity }}" 
+                                value="1"
+                                style="border-radius: 5px;"
+                                class="form-control mr-2 text-center"
+                            >
+                            <button type="submit" class="btn btn-danger rounded-1">Remove</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total Price: ${{ total_price }}</h3>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+<a href="{% url 'book_list' %}" class="btn btn-primary">Continue Shopping</a>
+{% endblock %}

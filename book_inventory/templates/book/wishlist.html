@@ -39,9 +39,33 @@
                         <p class="card-text small text-muted mb-2">{{ item.book.author }}</p>
                         <p class="card-text price">${{ item.book.price }}</p>
                         <!-- view detail -->
-                        <a href="{% url 'book_detail' item.book.pk %}" class="btn btn-sm btn-outline-primary w-100 mb-1">View Details</a>
-                        <!-- remove from wishlist -->
-                        <a href="{% url 'remove_from_wishlist' item.id %}" class="btn btn-sm btn-outline-primary bg-danger-hover w-100 mb-1">Remove</a>   
+                        <!-- <a href="{% url 'book_detail' item.book.pk %}" class="btn btn-sm btn-outline-primary w-100 mb-1">View Details</a> -->
+                        
+                        <!-- Add to Cart or Wishlist -->
+                        <div class="d-flex gap-2">
+                            <!-- Add to Cart -->
+                            <form method="post" action="{% url 'add_to_cart' item.book.id %}" class="w-100">
+                                {% csrf_token %}
+                                <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </form>
+                            
+                            <!-- Add to Wishlist -->
+                            <form method="post" action="{% url 'book_detail' item.book.pk %}" class="w-20">
+                                {% csrf_token %}
+                                <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </form>
+                            <!-- remove from wishlist -->
+                        </div>
+                        <form action="{% url 'remove_from_wishlist' item.id %}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this item?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger bg-danger-hover w-100 mt-2">
+                                <i class="fas fa-trash-alt me-2"></i>Remove
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

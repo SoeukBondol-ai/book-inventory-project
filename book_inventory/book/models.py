@@ -2,12 +2,14 @@ from django.db import models
 from django.urls import reverse
 from user.models import CustomUser
 
+# category model
 class Category(models.Model):
     name = models.CharField(max_length=100)
     
     def __str__(self):
         return self.name
 
+# book model
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
@@ -27,6 +29,7 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('book_detail', args=[str(self.id)])
     
+# wishlist model
 class Wishlist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -36,3 +39,16 @@ class Wishlist(models.Model):
         
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"
+    
+# cart model
+class Cart(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s cart - {self.book.title}"
+
+    def total_price(self):
+        return self.quantity * self.book.price

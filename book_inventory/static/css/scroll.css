@@ -1,0 +1,58 @@
+/* scroll parameters */
+:root {
+    --scroll-width: 50px; /* Width of the scrollbar */
+}
+
+/* Scrollable Container Wrapper */
+.scrollable-container-wrapper {
+    position: relative;
+    overflow: hidden; /* Hide overflow from the gradient overlays */
+}
+
+/* Scrollable Container */
+.scrollable-container {
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+/* Scrollable Row */
+.scrollable-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px; /* Spacing between cards */
+    padding-bottom: 10px; /* Space for scrollbar */
+}
+
+/* Gradient Overlay */
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--scroll-width); /* Width of the gradient overlay */
+    pointer-events: none; /* Allow clicks to pass through */
+    z-index: 1;
+}
+
+/* Left Gradient Overlay */
+.gradient-overlay.left {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+/* Right Gradient Overlay */
+.gradient-overlay.right {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+/* Optional: Hide scrollbar for a cleaner look */
+.scrollable-container::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollable-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}

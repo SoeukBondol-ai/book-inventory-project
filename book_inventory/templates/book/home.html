@@ -3,90 +3,198 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/hover.css' %}">
+    <link rel="stylesheet" href="{% static 'css/scroll.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
 {% endblock %}
 
 {% block content %}
+<!-- Carousel of Books with Smooth Entry -->
+<div class="container mt-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="fas fa-star text-warning me-2"></i>
+        <h2 class="m-0">Auto Selections</h2>
+    </div>
+
+    
+    <div id="bookCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Left Gradient Overlay -->
+    <div class="gradient-overlay left"></div>
+        <div class="carousel-inner">
+            {% for book in random_books %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="d-flex justify-content-center">
+                    <div class="col-lg-3 col-md-3 col-sm-12 mb-4 flex-shrink-0 me-3">
+                        <div class="card book-card h-100 position-relative">
+                            <div class="card-img-wrapper">
+                                {% if book.image %}
+                                <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                                {% else %}
+                                <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                                {% endif %}
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title text-truncate">{{ book.title }}</h6>
+                                <p class="card-text small text-muted mb-2">{{ book.author }}</p>
+                                <p class="card-text price">${{ book.price }}</p>
+                                <!-- View Detail -->
+                                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Carousel Controls -->
+        <a class="carousel-control-prev" href="#bookCarousel" role="button" data-slide="prev">
+            <i class="fas fa-chevron-left text-secondary" aria-hidden="true"></i>
+        </a>
+        <a class="carousel-control-next" href="#bookCarousel" role="button" data-slide="next">
+            <i class="fas fa-chevron-right text-secondary" aria-hidden="true"></i>
+        </a>
+        <!-- Right Gradient Overlay -->
+        <div class="gradient-overlay right"></div>
+    </div>
+</div>
+
+    
 <!-- New Arrivals Section -->
 <div class="container mb-5">
     <div class="d-flex align-items-center mb-4">
         <i class="fas fa-star text-warning me-2"></i>
         <h2 class="m-0">New Arrivals</h2>
     </div>
-    <div class="row">
-        {% for book in new_arrivals|slice:":6" %}
-        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
-            <div class="card book-card h-100 position-relative">
-                <div class="card-img-wrapper">
-                    {% if book.image %}
-                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                    {% endif %}
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title text-truncate">{{ book.title }}</h6>
-                    <p class="card-text small text-muted mb-2">{{ book.author }}</p>
-                    <p class="card-text price">${{ book.price }}</p>
-                    <!-- view detail -->
-                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
-                    <!-- add to wishlist -->
-                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
-                        {% csrf_token %}
-                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
-                    </form>
 
-                    <!-- admin remove and delete -->
-                    {% if user.is_authenticated and user.is_admin %}
-                        <div class="btn-container mt-2">
-                            <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
-                            <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+    <!-- Scrollable Container with Blurry Edges -->
+    <div class="scrollable-container-wrapper position-relative">
+        <!-- Left Gradient Overlay -->
+        <div class="gradient-overlay left"></div>
+
+        <!-- Scrollable Container -->
+        <div class="scrollable-container">
+            <div class="scrollable-row d-flex flex-nowrap overflow-auto pb-3">
+                {% for book in new_arrivals %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 mb-4 flex-shrink-0 me-3">
+                        <div class="card book-card h-100 position-relative">
+                            <div class="card-img-wrapper">
+                                {% if book.image %}
+                                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                                {% endif %}
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title text-truncate">{{ book.title }}</h6>
+                                <p class="card-text small text-muted mb-2">{{ book.author }}</p>
+                                <p class="card-text price">${{ book.price }}</p>
+                                <!-- View Detail -->
+                                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+
+                                <!-- Add to Cart or Wishlist -->
+                                <div class="d-flex gap-2">
+                                    <!-- Add to Cart -->
+                                    <form method="post" action="{% url 'add_to_cart' book.id %}" class="w-100">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Add to Wishlist -->
+                                    <form method="post" action="{% url 'add_to_wishlist' book.id %}" class="w-20">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100 btn-hover-pink" type="submit">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Admin Remove and Delete -->
+                                {% if user.is_authenticated and user.is_admin %}
+                                    <div class="btn-container mt-2">
+                                        <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
+                                        <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Right Gradient Overlay -->
+        <div class="gradient-overlay right"></div>
     </div>
 </div>
 
 <!-- Best Sellers Section -->
 <div class="container mb-5">
     <div class="d-flex align-items-center mb-4">
-        <i class="fas fa-trophy text-warning me-2"></i>
+        <i class="fas fa-crown text-warning me-2"></i>
         <h2 class="m-0">Best Sellers</h2>
     </div>
-    <div class="row">
-        {% for book in best_sellers|slice:":6" %}
-        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
-            <div class="card book-card h-100 position-relative">
-                <div class="card-img-wrapper">
-                    {% if book.image %}
-                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                    {% endif %}
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title text-truncate">{{ book.title }}</h6>
-                    <p class="card-text small text-muted mb-2">{{ book.author }}</p>
-                    <p class="card-text price">${{ book.price }}</p>
-                    <!-- view detail -->
-                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
-                    <!-- add to wishlist -->
-                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
-                        {% csrf_token %}
-                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
-                    </form>
-                    {% if user.is_authenticated and user.is_admin %}
-                        <div class="btn-container mt-2">
-                            <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
-                            <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+
+    <!-- Scrollable Container with Blurry Edges -->
+    <div class="scrollable-container-wrapper position-relative">
+        <!-- Left Gradient Overlay -->
+        <div class="gradient-overlay left"></div>
+
+        <!-- Scrollable Container -->
+        <div class="scrollable-container">
+            <div class="scrollable-row d-flex flex-nowrap overflow-auto pb-3">
+                {% for book in best_sellers %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 mb-4 flex-shrink-0 me-3">
+                        <div class="card book-card h-100 position-relative">
+                            <div class="card-img-wrapper">
+                                {% if book.image %}
+                                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                                {% endif %}
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title text-truncate">{{ book.title }}</h6>
+                                <p class="card-text small text-muted mb-2">{{ book.author }}</p>
+                                <p class="card-text price">${{ book.price }}</p>
+                                <!-- View Detail -->
+                                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+
+                                <!-- Add to Cart or Wishlist -->
+                                <div class="d-flex gap-2">
+                                    <!-- Add to Cart -->
+                                    <form method="post" action="{% url 'add_to_cart' book.id %}" class="w-100">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Add to Wishlist -->
+                                    <form method="post" action="{% url 'add_to_wishlist' book.id %}" class="w-20">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100 btn-hover-pink" type="submit">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Admin Remove and Delete -->
+                                {% if user.is_authenticated and user.is_admin %}
+                                    <div class="btn-container mt-2">
+                                        <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
+                                        <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Right Gradient Overlay -->
+        <div class="gradient-overlay right"></div>
     </div>
 </div>
 
@@ -96,40 +204,70 @@
         <i class="fas fa-fire text-warning me-2"></i>
         <h2 class="m-0">Now Trending</h2>
     </div>
-    <div class="row">
-        {% for book in now_trending|slice:":6" %}
-        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
-            <div class="card book-card h-100 position-relative">
-                <div class="card-img-wrapper">
-                    {% if book.image %}
-                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                    {% endif %}
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title text-truncate">{{ book.title }}</h6>
-                    <p class="card-text small text-muted mb-2">{{ book.author }}</p>
-                    <p class="card-text price">${{ book.price }}</p>
-                    <!-- view details -->
-                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
-                    <!-- add to wishlist -->
-                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
-                        {% csrf_token %}
-                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
-                    </form>
-                    {% if user.is_authenticated and user.is_admin %}
-                        <div class="btn-container mt-2">
-                            <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
-                            <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+
+    <!-- Scrollable Container with Blurry Edges -->
+    <div class="scrollable-container-wrapper position-relative">
+        <!-- Left Gradient Overlay -->
+        <div class="gradient-overlay left"></div>
+
+        <!-- Scrollable Container -->
+        <div class="scrollable-container">
+            <div class="scrollable-row d-flex flex-nowrap overflow-auto pb-3">
+                {% for book in now_trending %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 mb-4 flex-shrink-0 me-3">
+                        <div class="card book-card h-100 position-relative">
+                            <div class="card-img-wrapper">
+                                {% if book.image %}
+                                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                                {% endif %}
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title text-truncate">{{ book.title }}</h6>
+                                <p class="card-text small text-muted mb-2">{{ book.author }}</p>
+                                <p class="card-text price">${{ book.price }}</p>
+                                <!-- View Detail -->
+                                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+
+                                <!-- Add to Cart or Wishlist -->
+                                <div class="d-flex gap-2">
+                                    <!-- Add to Cart -->
+                                    <form method="post" action="{% url 'add_to_cart' book.id %}" class="w-100">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Add to Wishlist -->
+                                    <form method="post" action="{% url 'add_to_wishlist' book.id %}" class="w-20">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100 btn-hover-pink" type="submit">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Admin Remove and Delete -->
+                                {% if user.is_authenticated and user.is_admin %}
+                                    <div class="btn-container mt-2">
+                                        <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
+                                        <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Right Gradient Overlay -->
+        <div class="gradient-overlay right"></div>
     </div>
 </div>
+
 
 <!-- Award Winners Section -->
 <div class="container mb-5">
@@ -137,38 +275,67 @@
         <i class="fas fa-award text-warning me-2"></i>
         <h2 class="m-0">Award Winners</h2>
     </div>
-    <div class="row">
-        {% for book in award_winners|slice:":6" %}
-        <div class="col-lg-2 col-md-3 col-sm-6 mb-4">
-            <div class="card book-card h-100 position-relative">
-                <div class="card-img-wrapper">
-                    {% if book.image %}
-                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
-                    {% endif %}
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title text-truncate">{{ book.title }}</h6>
-                    <p class="card-text small text-muted mb-2">{{ book.author }}</p>
-                    <p class="card-text price">${{ book.price }}</p>
-                    <!-- view detail -->
-                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
-                    <!-- add to wishlist -->
-                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
-                        {% csrf_token %}
-                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
-                    </form>
-                    {% if user.is_authenticated and user.is_admin %}
-                        <div class="btn-container mt-2">
-                            <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
-                            <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+
+    <!-- Scrollable Container with Blurry Edges -->
+    <div class="scrollable-container-wrapper position-relative">
+        <!-- Left Gradient Overlay -->
+        <div class="gradient-overlay left"></div>
+
+        <!-- Scrollable Container -->
+        <div class="scrollable-container">
+            <div class="scrollable-row d-flex flex-nowrap overflow-auto pb-3">
+                {% for book in award_winners %}
+                    <div class="col-lg-2 col-md-3 col-sm-6 mb-4 flex-shrink-0 me-3">
+                        <div class="card book-card h-100 position-relative">
+                            <div class="card-img-wrapper">
+                                {% if book.image %}
+                                    <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ book.title }}">
+                                {% endif %}
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title text-truncate">{{ book.title }}</h6>
+                                <p class="card-text small text-muted mb-2">{{ book.author }}</p>
+                                <p class="card-text price">${{ book.price }}</p>
+                                <!-- View Detail -->
+                                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+
+                                <!-- Add to Cart or Wishlist -->
+                                <div class="d-flex gap-2">
+                                    <!-- Add to Cart -->
+                                    <form method="post" action="{% url 'add_to_cart' book.id %}" class="w-100">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Add to Wishlist -->
+                                    <form method="post" action="{% url 'add_to_wishlist' book.id %}" class="w-20">
+                                        {% csrf_token %}
+                                        <button class="mt-2 btn btn-sm btn-outline-primary w-100 btn-hover-pink" type="submit">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Admin Remove and Delete -->
+                                {% if user.is_authenticated and user.is_admin %}
+                                    <div class="btn-container mt-2">
+                                        <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
+                                        <a href="{% url 'delete_book' book.pk %}" class="btn btn-danger btn-sm w-100">Delete</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Right Gradient Overlay -->
+        <div class="gradient-overlay right"></div>
     </div>
 </div>
 

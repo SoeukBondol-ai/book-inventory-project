@@ -36,10 +36,16 @@
     background-color: red !important;
     border-color: red !important;
     color: white !important;
-  }
+}
 
-  .bg-danger-hover:hover {
-    background-color: red !important;
-    border-color: red !important;
+.bg-danger-hover:hover {
+background-color: red !important;
+border-color: red !important;
+color: white !important;
+}
+
+.btn-hover-pink:hover {
+    background-color: pink !important;
+    border-color: pink !important;
     color: white !important;
-  }
+}

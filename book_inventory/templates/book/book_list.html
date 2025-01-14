@@ -23,11 +23,26 @@
                             <p class="card-text small text-muted mb-2">{{ book.author }}</p>
                             <p class="card-text price">${{ book.price }}</p>
                             <a href="{{ book.get_absolute_url }}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
-                            <!-- add to wishlist -->
-                            <form method="post" action="{% url 'add_to_wishlist' book.id %}">
-                                {% csrf_token %}
-                                <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">Wishlist</button>
-                            </form>
+                            
+                            <!-- add to cart or wishlist -->
+                            <div class="d-flex gap-2">
+                                <!-- add to cart -->
+                                <form method="post" action="{% url 'add_to_cart' book.id %}" class="w-100">
+                                    {% csrf_token %}
+                                    <button class="mt-2 btn btn-sm btn-outline-primary w-100" type="submit">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </form>
+
+                                <!-- add to wishlist -->
+                                <form method="post" action="{% url 'add_to_wishlist' book.id %}"  class="w-20">
+                                    {% csrf_token %}
+                                    <button class="mt-2 btn btn-sm btn-outline-primary w-100 btn-hover-pink" type="submit">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </form> 
+                            </div>
+
                             {% if user.is_authenticated and user.is_admin %}
                                 <div class="btn-container mt-2">
                                     <a href="{% url 'edit_book' book.pk %}" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
